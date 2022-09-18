@@ -127,6 +127,10 @@ const borderWidth = 10;
 var StpragePosition;
 var startLeft;
 function computedBoxPosition(target, targetDomClass) {
+  // 将元素设置为最顶层 否则无法查看滚动弧
+  setStyle(target, {
+    zIndex: 9999,
+  });
   // 获取元素四周的位置
   StpragePosition = storageBox.getBoundingClientRect();
   // 计算StpragePosition的盒子内容的0,0的位置 (盒子的坐标-外部的坐标(app四周的空白) + 边框)
