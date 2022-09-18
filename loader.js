@@ -297,12 +297,10 @@ function drawBlock(gloup) {
   // 一共多少组
   let virtualArr = [];
   for (let index = 0; index < gloup; index++) {
-    virtualArr.push(...IMGS);
+    // 保存打乱的数组
+    virtualArr.push(...IMGS.sort(randomSort));
   }
-  // 打乱数组
-  virtualArr.sort(randomSort);
-  // virtualArr
-  console.log("virtualArr => ", virtualArr);
+  // 生成实例化Block
   virtualArr.forEach((v, index) => {
     const vBlock = new Block(v, index);
     allBlock.push(vBlock);
