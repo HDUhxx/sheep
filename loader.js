@@ -1,7 +1,10 @@
 const app = document.getElementById("app");
 const $width = 50;
 const $height = 50;
-const BlockNums = 100;
+// 游戏结束
+var gameOver = false;
+// 多少组 一组3个  每个图形11组
+const BlockNums = 15;
 // 消消乐元素
 const IMGS = [
   "./img/key1.jpeg",
@@ -36,15 +39,15 @@ const AppPosition = calculationOfPosition();
 class Block {
   // n 表示第几张图 (必须0-6) 也是配对的关键 一旦生成不会改变
   // i 当前图片在数组中的下表 i 一旦生成 不会改变
-  constructor(n, i) {
+  constructor(src, i) {
     this.width = $width;
     this.height = $height;
-    // 当选中图片时 判断 n 是否相同
-    // console.log("n ==> ", n);
-    this.n = n;
+    // n用于当选中图片时 判断 src 是否相同 如果src相同即可
+    this.n = src;
     // 当前图片生成的位置 （用于判断是否被遮盖 0被1遮盖， 1被2遮盖）
     this.index = i;
-    this.src = IMGS[n];
+    // 图片路径
+    this.src = src;
     // x 坐标
     this.x = randomPosition(AppPosition.drawStartX, AppPosition.drawEndX);
     // y 坐标
@@ -251,6 +254,11 @@ function checkBox() {
       }, 300);
     }
   }
+  // 如果消除完毕 还有七个表示游戏结束
+  if (hasBeenStored.length === 7) {
+    alert("您G了");
+    gameOver = true;
+  }
 }
 
 window.onload = function () {
@@ -284,12 +292,21 @@ function randomKey(min, max) {
 }
 
 // 生成Block模块
-function drawBlock(num) {
-  // 计算块个数
-  for (let index = 0; index < num; index++) {
-    const vBlock = new Block(randomKey(0, 6), index);
-    allBlock.push(vBlock);
+function drawBlock(gloup) {
+  // IMGS
+  // 一共多少组
+  let virtualArr = [];
+  for (let index = 0; index < gloup; index++) {
+    virtualArr.push(...IMGS);
   }
+  // 打乱数组
+  virtualArr.sort(randomSort);
+  // virtualArr
+  console.log("virtualArr => ", virtualArr);
+  virtualArr.forEach((v, index) => {
+    const vBlock = new Block(v, index);
+    allBlock.push(vBlock);
+  });
   // 为什么要分离,因为不用实例化多次
   createBlockToDocument();
 }
@@ -304,8 +321,8 @@ function createBlockToDocument() {
 
 // 点击块事件
 function clickBlock(target, targetDomClass) {
-  if (hasBeenStored.length === 7) {
-    console.log("您G了");
+  if (gameOver) {
+    alert("游戏结束");
     return;
   }
   if (targetDomClass.blockState) {
@@ -314,4 +331,9 @@ function clickBlock(target, targetDomClass) {
     // 判断是否有可以消除的(已经存在三个一组了)
     checkBox();
   }
+}
+
+// 打乱数组
+function randomSort(a, b) {
+  return Math.random() > 0.5 ? -1 : 1;
 }
