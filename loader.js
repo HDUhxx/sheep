@@ -3,7 +3,7 @@ const $width = 50;
 const $height = 50;
 // 游戏结束
 var gameOver = false;
-// 多少组 一组3个  每个图形11组
+// 多少组一组3个
 const BlockNums = 15;
 // 消消乐元素
 const IMGS = [
