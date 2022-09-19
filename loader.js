@@ -83,10 +83,9 @@ class Block {
             thatBlock.y + thatBlock.height < yTop
           )
         ) {
-          coverS;
+          coverState = true;
+          break;
         }
-        tate = true;
-        break;
       }
     }
     return coverState;
