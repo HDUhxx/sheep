@@ -118,6 +118,7 @@ class Block {
     return imgDom;
   }
 }
+// 覆盖逻辑如下
 // 按照顺序 0 - 100 存放叠加的block块
 const allBlock = [];
 // 收集盒: 收集 target和实例化的new Block()
@@ -321,6 +322,8 @@ function clickBlock(target, targetDomClass) {
     return;
   }
   if (targetDomClass.blockState) {
+    // 点击以后设置为不可点击
+    targetDomClass.blockState = false;
     // 将块插入到盒子中
     computedBoxPosition(target, targetDomClass);
     // 判断是否有可以消除的(已经存在三个一组了)
@@ -337,13 +340,17 @@ function randomSort(a, b) {
 function GameValidate() {
   // 如果消除完毕 还有七个表示游戏结束
   if (hasBeenStored.length === 7) {
-    alert("您G了");
+    setTimeout(() => {
+      alert("您G了");
+    }, 225);
     gameOver = true;
   }
 
   // 消除后 两个数组全部为空 表示赢了
   if (!allBlock.length && !hasBeenStored.length) {
-    alert("您WIN了");
+    setTimeout(() => {
+      alert("您WIN了");
+    }, 225);
     gameOver = true;
   }
 }
