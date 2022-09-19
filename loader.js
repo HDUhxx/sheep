@@ -83,9 +83,10 @@ class Block {
             thatBlock.y + thatBlock.height < yTop
           )
         ) {
-          coverState = true;
-          break;
+          coverS;
         }
+        tate = true;
+        break;
       }
     }
     return coverState;
@@ -215,7 +216,7 @@ function computedBoxPosition(target, targetDomClass) {
   createBlockToDocument();
 }
 
-// 验证判断清除
+// 验证组判断和清除 （是否已达成三个一组）
 function checkBox() {
   const checkMap = {};
   hasBeenStored.forEach((v, i) => {
@@ -229,14 +230,13 @@ function checkBox() {
       id: v.targetDomClass.index,
     });
   });
-
   // 检查是否有超过三个的
   for (const key in checkMap) {
     if (checkMap[key].length === 3) {
-      console.log("可以删除", checkMap[key]);
+      // console.log("可以删除", checkMap[key]);
       // 删除数组
       hasBeenStored.splice(checkMap[key][0].index, 3);
-      // 删除页面Dom
+      // 同步删除页面Dom
       setTimeout(() => {
         checkMap[key].forEach((v) => {
           var box = document.getElementById(v.id);
@@ -244,21 +244,19 @@ function checkBox() {
         });
         // 同步页面数据
         hasBeenStored.forEach((v, i) => {
-          // 同步缓存数据
           let left = startLeft + i * v.targetDomClass.width + "px";
+          // 同步target
           setStyle(v.target, {
             left,
           });
+          // 同步映射class数据
           v.targetDomClass.left = left;
         });
       }, 300);
     }
   }
-  // 如果消除完毕 还有七个表示游戏结束
-  if (hasBeenStored.length === 7) {
-    alert("您G了");
-    gameOver = true;
-  }
+  // 验证状态
+  GameValidate();
 }
 
 window.onload = function () {
@@ -334,4 +332,19 @@ function clickBlock(target, targetDomClass) {
 // 打乱数组
 function randomSort(a, b) {
   return Math.random() > 0.5 ? -1 : 1;
+}
+
+// 验证输赢
+function GameValidate() {
+  // 如果消除完毕 还有七个表示游戏结束
+  if (hasBeenStored.length === 7) {
+    alert("您G了");
+    gameOver = true;
+  }
+
+  // 消除后 两个数组全部为空 表示赢了
+  if (!allBlock.length && !hasBeenStored.length) {
+    alert("您WIN了");
+    gameOver = true;
+  }
 }
