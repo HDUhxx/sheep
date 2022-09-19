@@ -37,7 +37,6 @@ const AppPosition = calculationOfPosition();
 
 // Blcok块类
 class Block {
-  // n 表示第几张图 (必须0-6) 也是配对的关键 一旦生成不会改变
   // i 当前图片在数组中的下表 i 一旦生成 不会改变
   constructor(src, i) {
     this.width = $width;
